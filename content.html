@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equivalent Fractions Interactive</title>
+  <style>
+    .container {
+      width: 300px;
+      margin: 20px auto;
+      text-align: center;
+      display: flex;
+      align-items: center;
+    }
+    .fraction-strip {
+      display: flex;
+      margin: 20px 120px;
+      justify-content: center;
+      position: relative;
+    }
+    .fraction-strip div {
+      height: 50px;
+      border: 1px solid #666666;
+      position: relative;
+      box-sizing: border-box;
+    }
+    .whole {
+      width: 300px;
+    }
+    #strip1 div {
+      width: 50px; /* 300px / 6 */
+    }
+    #strip2 div {
+      width: 100px; /* 300px / 3 */
+    }
+    .shaded {
+      background-color: #BEBEBE;
+    }
+    .slider-container {
+      position: relative;
+      height: 140px;
+    }
+    .movable-strip {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      z-index: 2;
+    }
+    #strip2 {
+      position: absolute;
+      top: 50px; /* Ensure it's below initially */
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      z-index: 1;
+    }
+    .slider-wrapper {
+      margin-right: 20px;
+      z-index: 3; /* Ensure slider is in front */
+    }
+    input[type="range"] {
+      writing-mode: bt-lr; /* IE */
+      -webkit-appearance: slider-vertical; /* WebKit */
+      width: 8px;
+      height: 110px; /* Increased height for better control */
+      padding: 0 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="slider-wrapper">
+    <input type="range" min="0" max="50" value="50" class="slider" id="fractionSlider" oninput="moveStrip()">
+  </div>
+  <div class="slider-container">
+    <div class="fraction-strip whole" id="strip2">
+      <div class="shaded"></div>
+      <div class="shaded"></div>
+      <div></div>
+    </div>
+    <div class="fraction-strip whole movable-strip" id="strip1">
+      <div class="shaded"></div>
+      <div class="shaded"></div>
+      <div class="shaded"></div>
+      <div class="shaded"></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function moveStrip() {
+    const slider = document.getElementById('fractionSlider');
+    const strip1 = document.getElementById('strip1');
+    const maxOffset = 50; // Maximum offset in pixels
+    strip1.style.bottom = `${slider.value}px`; // Adjusting direction to move down with slider
+  }
+</script>
+
+</body>
+</html>
