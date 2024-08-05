@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draggable Ball Interactive</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      background-color: #FFFFFF;
+    }
+    .container {
+      width: 600px;
+      height: 300px;
+      position: relative;
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .circle {
+      width: 30px;
+      height: 30px;
+      background-color: #E94A4A;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      cursor: grab;
+      z-index: 10; /* Ensure the ball is on top */
+    }
+    .rectangle {
+      width: 150px;
+      height: 100px;
+      border: 1px solid #BEBEBE;
+      background-color: transparent;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      z-index: 1; /* Ensure the rectangle is below the ball */
+    }
+    .button-wrapper {
+      text-align: center;
+      width: 100%;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="circle" id="circle" draggable="true"></div>
+    <div class="rectangle" id="rectangle"></div>
+    <div class="button-wrapper">
+      <button onclick="checkPosition()">Check</button>
+    </div>
+  </div>
+  <script>
+    const circle = document.getElementById('circle');
+
+    circle.addEventListener('dragstart', (event) => {
+      const style = window.getComputedStyle(event.target, null);
+      event.dataTransfer.setData('text/plain',
+        (parseInt(style.getPropertyValue('left'), 10) - event.clientX) + ',' +
+        (parseInt(style.getPropertyValue('top'), 10) - event.clientY));
+    });
+
+    document.querySelector('.container').addEventListener('dragover', (event) => {
+      event.preventDefault();
+      return false;
+    });
+
+    document.querySelector('.container').addEventListener('drop', (event) => {
+      const offset = event.dataTransfer.getData('text/plain').split(',');
+      const circle = document.getElementById('circle');
+      const containerRect = document.querySelector('.container').getBoundingClientRect();
+      const newLeft = event.clientX + parseInt(offset[0], 10);
+      const newTop = event.clientY + parseInt(offset[1], 10);
+      
+      // Ensure the circle stays within the container
+      if (newLeft >= 0 && newLeft <= containerRect.width - circle.clientWidth) {
+        circle.style.left = newLeft + 'px';
+      }
+      if (newTop >= 0 && newTop <= containerRect.height - circle.clientHeight) {
+        circle.style.top = newTop + 'px';
+      }
+      event.preventDefault();
+      return false;
+    });
+
+    function checkPosition() {
+      const circle = document.getElementById('circle');
+      const rectangle = document.getElementById('rectangle');
+      const circleRect = circle.getBoundingClientRect();
+      const rectRect = rectangle.getBoundingClientRect();
+      const positionData = {
+        circle: {
+          left: circleRect.left,
+          right: circleRect.right,
+          top: circleRect.top,
+          bottom: circleRect.bottom
+        },
+        rectangle: {
+          left: rectRect.left,
+          right: rectRect.right,
+          top: rectRect.top,
+          bottom: rectRect.bottom
+        }
+      };
+      console.log(JSON.stringify(positionData));
+      alert(JSON.stringify(positionData));
+    }
+
+    // Set the initial position of the circle when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      circle.style.left = '10px';
+      circle.style.top = '50%';
+    });
+  </script>
+</body>
+</html>
