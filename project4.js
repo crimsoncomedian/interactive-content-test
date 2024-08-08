@@ -64,4 +64,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     interactiveElement.addEventListener('hideDiameter', function() {
- 
+        document.getElementById('diameter-line').style.width = '0';
+    });
+
+    // Assuming the parent document has smartphrase elements with specific IDs
+    // Example IDs: #circumference, #diameter
+
+    window.parent.document.querySelectorAll('#circumference, #diameter').forEach(function(element) {
+        if (element.id === 'circumference') {
+            element.addEventListener('mouseover', function() {
+                triggerInteractive('showCircumference');
+            });
+            element.addEventListener('mouseout', function() {
+                triggerInteractive('hideCircumference');
+            });
+        } else if (element.id === 'diameter') {
+            element.addEventListener('mouseover', function() {
+                triggerInteractive('showDiameter');
+            });
+            element.addEventListener('mouseout', function() {
+                triggerInteractive('hideDiameter');
+            });
+        }
+    });
+});
