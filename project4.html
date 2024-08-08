@@ -44,6 +44,7 @@
         <div class="diameter-line" id="diameter-line"></div>
     </div>
     <script>
+        // Function to trigger interactive actions
         window.triggerInteractive = function(action) {
             const interactiveElement = document.getElementById('interactiveElement');
             interactiveElement.dispatchEvent(new CustomEvent(action));
@@ -53,11 +54,12 @@
             const interactiveElement = document.createElement('div');
             interactiveElement.id = 'interactiveElement';
             document.body.appendChild(interactiveElement);
-            
+
+            // Listen for events and apply styles
             interactiveElement.addEventListener('showCircumference', function() {
                 document.getElementById('circle').classList.add('highlight-circumference');
             });
-            
+
             interactiveElement.addEventListener('hideCircumference', function() {
                 document.getElementById('circle').classList.remove('highlight-circumference');
             });
@@ -68,6 +70,27 @@
 
             interactiveElement.addEventListener('hideDiameter', function() {
                 document.getElementById('diameter-line').style.width = '0';
+            });
+
+            // Assuming the parent document has smartphrase elements with specific IDs
+            // Example IDs: #circumference, #diameter
+
+            window.parent.document.querySelectorAll('#circumference, #diameter').forEach(function(element) {
+                if (element.id === 'circumference') {
+                    element.addEventListener('mouseover', function() {
+                        triggerInteractive('showCircumference');
+                    });
+                    element.addEventListener('mouseout', function() {
+                        triggerInteractive('hideCircumference');
+                    });
+                } else if (element.id === 'diameter') {
+                    element.addEventListener('mouseover', function() {
+                        triggerInteractive('showDiameter');
+                    });
+                    element.addEventListener('mouseout', function() {
+                        triggerInteractive('hideDiameter');
+                    });
+                }
             });
         });
     </script>
