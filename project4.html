@@ -44,13 +44,15 @@
         <div class="diameter-line" id="diameter-line"></div>
     </div>
     <script>
-        function triggerInteractive(action) {
+        window.triggerInteractive = function(action) {
             const interactiveElement = document.getElementById('interactiveElement');
             interactiveElement.dispatchEvent(new CustomEvent(action));
-        }
+        };
 
         document.addEventListener('DOMContentLoaded', function() {
-            const interactiveElement = document.getElementById('interactiveElement');
+            const interactiveElement = document.createElement('div');
+            interactiveElement.id = 'interactiveElement';
+            document.body.appendChild(interactiveElement);
             
             interactiveElement.addEventListener('showCircumference', function() {
                 document.getElementById('circle').classList.add('highlight-circumference');
@@ -67,14 +69,6 @@
             interactiveElement.addEventListener('hideDiameter', function() {
                 document.getElementById('diameter-line').style.width = '0';
             });
-
-            // Simulated function to load interactive content
-            function loadInteractiveContent() {
-                // const embedData = JSON.parse(atob(interactiveElement.getAttribute('data-embed')));
-                // interactiveElement.innerHTML = `<div>Interactive Content Loaded: ${embedData.name}</div>`;
-            }
-
-            loadInteractiveContent();
         });
     </script>
 </body>
